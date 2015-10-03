@@ -7,9 +7,10 @@ global UUTS
 
 proc make_update {now} {
 	global UUTS
-	set fp [open acq400.xml w]
+	set fp [open acq400.xml.new w]
 	puts $fp {<?xml version="1.0" encoding="UTF-8"?>}
-	puts $fp {<body><header>[date]</header>}
+	set DATE [exec date]
+	puts $fp "<body><header>$DATE</header>"
 	foreach uut [lsort -index 0 [array names UUTS]] {
 		set age [expr $now - [clock scan $UUTS($uut)]]
 		if {$age > 30} {
@@ -17,13 +18,16 @@ proc make_update {now} {
 		} else {
 			set uptime err
 			catch {set uptime [exec caget -t $uut:SYS:UPTIME]}
-			puts $fp {<record><info>}
+			puts $fp {<record>}
+			puts $fp "<acq400monitor dt=\"$age\"/>"
+			puts $fp {<info>}
 			puts $fp "<host>$uut</host>"
 			puts $fp "<uptime>$uptime</uptime>"
 			puts $fp {</info></record>}
 		}
 	}
 	puts $fp {</body>}
+	file rename -force acq400.xml.new acq400.xml
 	close $fp
 }
 set update0 [clock seconds]
