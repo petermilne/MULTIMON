@@ -53,6 +53,9 @@
                 <th>Delay</th>
                 <th>Hostname</th>
                 <th>Uptime</th>
+                <th>T0</th>
+                <th>State</th>
+                <th>Shot</th>
             </tr>
 
         </xsl:for-each>
@@ -80,12 +83,12 @@
         <xsl:for-each select="@*">
             <td class="REMpg-td">
                 <xsl:choose>
-                    <xsl:when test="../@dt &gt; 10">
+                    <xsl:when test="../@dt &gt; 20">
                         <xsl:attribute name="style">
                             <xsl:text>color: red</xsl:text>
                         </xsl:attribute>
                         <xsl:choose>
-                            <xsl:when test="../@dt &gt; 30 and position() = 2">
+                            <xsl:when test="../@dt &gt; 60 and position() = 2">
                                 <xsl:attribute name="style">
                                     <xsl:text>color: red;</xsl:text>
                                 </xsl:attribute>

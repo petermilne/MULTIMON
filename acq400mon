@@ -13,16 +13,27 @@ proc make_update {now} {
 	puts $fp "<body><header>$DATE</header>"
 	foreach uut [lsort -index 0 [array names UUTS]] {
 		set age [expr $now - [clock scan $UUTS($uut)]]
-		if {$age > 30} {
+		if {$age > 60} {
 			unset UUTS($uut)	
 		} else {
 			set uptime err
-			catch {set uptime [exec caget -t $uut:SYS:UPTIME]}
+			set T0 err
+			set state err
+			set shot err
+			catch {
+				set uptime [exec caget -t $uut:SYS:UPTIME]
+				set T0 [exec caget -t $uut:SYS:0:TEMP]
+				set shot [exec caget -t $uut:1:SHOT]
+				set state [exec caget -t $uut:MODE:TRANS_ACT:STATE]
+			}
 			puts $fp {<record>}
 			puts $fp "<acq400monitor dt=\"$age\"/>"
 			puts $fp {<info>}
 			puts $fp "<host>$uut</host>"
 			puts $fp "<uptime>$uptime</uptime>"
+			puts $fp "<T0>$T0</T0>"
+			puts $fp "<state>$state</state>"
+			puts $fp "<shot>$shot</shot>"
 			puts $fp {</info></record>}
 		}
 	}
