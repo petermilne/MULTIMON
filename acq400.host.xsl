@@ -29,8 +29,9 @@
                 </td>
                 <td colspan="7" class="REMpg-top-heading">
                     <h1> 
-           			D-TACQ UUT Status by ip
+           			ACQ400 UUT Status
                     </h1>
+                    by hostname
                 </td>
                 <td>
                 </td>
@@ -120,7 +121,17 @@
                 <xsl:attribute name="style">
                     <xsl:text>padding: 2px;</xsl:text>
                 </xsl:attribute>
-                <xsl:apply-templates select="."/>
+                 <xsl:choose>
+			<xsl:when test="position() = 1">
+				 <a href="http://{.}/">
+				 	<xsl:value-of select="."/>
+				 </a>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates select="."/>
+			</xsl:otherwise>
+		 </xsl:choose>
+
             </td>
         </xsl:for-each>
     </xsl:template>
