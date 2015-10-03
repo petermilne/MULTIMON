@@ -1,0 +1,46 @@
+#!/usr/bin/expect
+
+log_user 0
+spawn casw -i 10
+
+global UUTS
+
+proc make_update {now} {
+	global UUTS
+	set fp [open acq400.xml w]
+	puts $fp {<?xml version="1.0" encoding="UTF-8"?>}
+	puts $fp {<body><header>[date]</header>}
+	foreach uut [lsort -index 0 [array names UUTS]] {
+		set age [expr $now - [clock scan $UUTS($uut)]]
+		if {$age > 30} {
+			unset UUTS($uut)	
+		} else {
+			set uptime err
+			catch {set uptime [exec caget -t $uut:SYS:UPTIME]}
+			puts $fp {<record><info>}
+			puts $fp "<host>$uut</host>"
+			puts $fp "<uptime>$uptime</uptime>"
+			puts $fp {</info></record>}
+		}
+	}
+	puts $fp {</body>}
+	close $fp
+}
+set update0 [clock seconds]
+while { 1 } {
+	expect {
+	-re "(\[a-zA-Z0-9\._\-]+)\.d\-tacq:5064.*(\[0-9-]+) (\[0-9:]+)(\.\[0-9]+)\r\n" {
+			set uut $expect_out(1,string)
+			set tim $expect_out(3,string)
+#			puts "got one $uut at $tim"
+			set UUTS($uut) $tim
+		}
+	}
+	set now [clock seconds]
+#	puts "update0 $update0 now $now"
+	if { $now > [expr $update0 + 1] } {
+		make_update $now
+		set update0 $now
+	}
+}
+
