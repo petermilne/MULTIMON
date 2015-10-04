@@ -13,7 +13,7 @@ proc make_update {now} {
 	puts $fp "<body><header>$DATE</header>"
 	foreach uut [lsort -index 0 [array names UUTS]] {
 		set age [expr $now - [clock scan $UUTS($uut)]]
-		if {$age > 60} {
+		if {$age > 120} {
 			unset UUTS($uut)	
 		} else {
 			set uptime err
