@@ -1,0 +1,35 @@
+#!/bin/bash
+
+PIDFILE=/var/run/multimon.pid
+LOGFILE=/var/log/multimon.log
+#JAVA=/opt/jdk1.6.0/bin/java
+JAVA="/usr/bin/java -Xmx256M"
+
+JOPTS="-Dcom.sun.management.jmxremote.port=53500 \
+	-Dcom.sun.management.jmxremote.ssl=false \
+	-Dcom.sun.management.jmxremote.authenticate=false"
+
+echo START `date` >$LOGFILE
+
+if [ -f $PIDFILE ]; then
+	OLDPID=`cat $PIDFILE`
+	kill -9 $OLDPID
+	echo KILL $OLDPID result $? >>$LOGFILE
+fi
+
+#echo pgmwashere 20120701 bad resource usage
+#exit 0
+
+ACQ400PIDF=/var/run/acq400mon.pid
+
+if [ -f $ACQ400PIDF ]; then
+	kill -9 $(cat $ACQ400PIDF)
+fi
+
+nice -n 20 $JAVA $XJOPTS -jar ACQ2xxWsClient.jar >>$LOGFILE 2>>$LOGFILE &
+
+echo $! >$PIDFILE
+
+
+nice ./acq400mon &
+echo $! >$ACQ400PIDF
