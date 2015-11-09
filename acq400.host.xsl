@@ -31,7 +31,9 @@
                     <h1> 
            			ACQ400 UUT Status
                     </h1>
-                    by hostname
+                    <h2>
+                    By Hostname
+                    </h2>
                 </td>
                 <td>
                 </td>
@@ -56,6 +58,8 @@
                 <th>T0</th>
                 <th>State</th>
                 <th>Shot</th>
+                <th>Software</th>
+                <th>FPGA</th>
             </tr>
 
         </xsl:for-each>
@@ -108,7 +112,7 @@
     </xsl:template>
     <xsl:template match="Monitor">
         <xsl:for-each select="*">
-            <td class="REMpg-td" colspan="3" align="left">
+            <td class="REMpg-td" colspan="1" align="left">
                 <xsl:choose>                    
                     <xsl:otherwise>
                         <xsl:value-of select="."/>

@@ -17,11 +17,15 @@ proc make_update {now} {
 		set T0 err
 		set state err
 		set shot err
+		set swrel err
+		set fpga err
 		if {[catch {
 			set uptime [exec caget -t $uut:SYS:UPTIME]
 			set T0 [exec caget -t $uut:SYS:0:TEMP]
 			set shot [exec caget -t $uut:1:SHOT]
 			set state [exec caget -t $uut:MODE:TRANS_ACT:STATE]
+			set swrel [exec caget -t $uut:SYS:VERSION:SW]
+			set fpga [exec caget -t $uut:SYS:VERSION:FPGA]
 			set age 1
 		}] } {
 			if { $age > 240 } {
@@ -36,6 +40,8 @@ proc make_update {now} {
 		puts $fp "<T0>$T0</T0>"
 		puts $fp "<state>$state</state>"
 		puts $fp "<shot>$shot</shot>"
+		puts $fp "<swrel>$swrel</swrel>"
+		puts $fp "<fpga>$fpga</fpga>"
 		puts $fp {</info></record>}
 	}
 	puts $fp {</body>}
