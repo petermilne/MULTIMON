@@ -9,6 +9,8 @@ JOPTS="-Dcom.sun.management.jmxremote.port=53500 \
 	-Dcom.sun.management.jmxremote.ssl=false \
 	-Dcom.sun.management.jmxremote.authenticate=false"
 
+source /etc/profile.d/epics.sh
+
 echo START `date` >$LOGFILE
 
 if [ -f $PIDFILE ]; then
@@ -27,7 +29,6 @@ if [ -f $ACQ400PIDF ]; then
 fi
 
 nice -n 20 $JAVA $XJOPTS -jar ACQ2xxWsClient.jar >>$LOGFILE 2>>$LOGFILE &
-
 echo $! >$PIDFILE
 
 

@@ -1,7 +1,7 @@
 #!/usr/bin/expect
 
 log_user 0
-spawn casw -i 10
+spawn /home/epics/base/bin/linux-x86_64/casw -i 10
 
 global UUTS
 
@@ -13,29 +13,30 @@ proc make_update {now} {
 	puts $fp "<body><header>$DATE</header>"
 	foreach uut [lsort -index 0 [array names UUTS]] {
 		set age [expr $now - [clock scan $UUTS($uut)]]
-		if {$age > 120} {
-			unset UUTS($uut)	
-		} else {
-			set uptime err
-			set T0 err
-			set state err
-			set shot err
-			catch {
-				set uptime [exec caget -t $uut:SYS:UPTIME]
-				set T0 [exec caget -t $uut:SYS:0:TEMP]
-				set shot [exec caget -t $uut:1:SHOT]
-				set state [exec caget -t $uut:MODE:TRANS_ACT:STATE]
+		set uptime err
+		set T0 err
+		set state err
+		set shot err
+		if {[catch {
+			set uptime [exec caget -t $uut:SYS:UPTIME]
+			set T0 [exec caget -t $uut:SYS:0:TEMP]
+			set shot [exec caget -t $uut:1:SHOT]
+			set state [exec caget -t $uut:MODE:TRANS_ACT:STATE]
+			set age 1
+		}] } {
+			if { $age > 240 } {
+				unset UUTS($uut)
 			}
-			puts $fp {<record>}
-			puts $fp "<acq400monitor dt=\"$age\"/>"
-			puts $fp {<info>}
-			puts $fp "<host>$uut</host>"
-			puts $fp "<uptime>$uptime</uptime>"
-			puts $fp "<T0>$T0</T0>"
-			puts $fp "<state>$state</state>"
-			puts $fp "<shot>$shot</shot>"
-			puts $fp {</info></record>}
 		}
+		puts $fp {<record>}
+		puts $fp "<acq400monitor dt=\"$age\"/>"
+		puts $fp {<info>}
+		puts $fp "<host>$uut</host>"
+		puts $fp "<uptime>$uptime</uptime>"
+		puts $fp "<T0>$T0</T0>"
+		puts $fp "<state>$state</state>"
+		puts $fp "<shot>$shot</shot>"
+		puts $fp {</info></record>}
 	}
 	puts $fp {</body>}
 	file rename -force acq400.xml.new acq400.xml
