@@ -9,7 +9,7 @@ JOPTS="-Dcom.sun.management.jmxremote.port=53500 \
 	-Dcom.sun.management.jmxremote.ssl=false \
 	-Dcom.sun.management.jmxremote.authenticate=false"
 
-source /etc/profile.d/epics.sh
+#source /etc/profile.d/epics.sh
 
 echo START `date` >$LOGFILE
 
@@ -26,11 +26,19 @@ ACQ400PIDF=/var/run/acq400mon.pid
 
 if [ -f $ACQ400PIDF ]; then
 	kill -9 $(cat $ACQ400PIDF)
+	killall casw
 fi
 
 nice -n 20 $JAVA $XJOPTS -jar ACQ2xxWsClient.jar >>$LOGFILE 2>>$LOGFILE &
 echo $! >$PIDFILE
 
+# make sure epics ca gets thru
+/sbin/iptables-save | grep -q 'sport 5064'
+[ $? -ne 0 ] && /sbin/iptables -I INPUT -s 10.12.196.0/22 -p udp --sport 5064 -j ACCEPT
 
-nice ./acq400mon &
+
+source /etc/profile.d/epics.sh
+export MULTIMON_CUSTOM=yes
+nice -n 18 ./multimon400.py  >/dev/null 2>&1  &
 echo $! >$ACQ400PIDF
+
