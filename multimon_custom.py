@@ -5,7 +5,11 @@ import time
 import urllib2
 import re
 
-TTYSERVERS = ('rpi-001', 'rpi-003', 'rpi-004', 'rpi-005', 'rpi-006', 'rpi-007', 'rpi-008', 'neon', 'eorsa', 'eigg', 'wiay')
+TTYSERVERS = (
+    'rpi-001', 'rpi-003', 'rpi-004', 'rpi-005', 'rpi-006', 
+    'rpi-007', 'rpi-008', 'rpi-009', 'rpi-010', 'rpi-011',
+    'rpi-012', 'rpi-013',
+    'neon', 'eorsa', 'eigg', 'wiay')
 
 def update_ttys(ttys, server):
     try:
