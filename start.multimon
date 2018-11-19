@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PIDFILE=/var/run/multimon.pid
-LOGFILE=/var/log/multimon.log
+LOGFILE=/home/var/log/multimon.log
 #JAVA=/opt/jdk1.6.0/bin/java
 JAVA="/usr/bin/java -Xmx256M"
 
