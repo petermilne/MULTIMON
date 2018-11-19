@@ -91,10 +91,18 @@ class Uut:
 	print("uut_status_update {} {} {}".format(self.epics_hn, threading.currentThread().ident, 99))
 	 
 
+def blacklisted(uut):
+    blacklist = ( "acq196", "acq164", "acq132", "acq216")
+    for b in blacklist:
+        if uut.startswith(b):
+            return True
+    return False
+
 def cas_mon():
 #    casw = subprocess.Popen(('casw', '-i', '2'), bufsize=-1, stdout=subprocess.PIPE)
     casw =subprocess.Popen(('nc', 'acq2006_013', '54555'), bufsize=-1, stdout=subprocess.PIPE)
     expr = re.compile('  ([]\w.-]+):5064')
+    blacklist = ( "acq196", "acq164", "acq132", "acq216")
     
     while True:
         out = casw.stdout.readline()
@@ -103,8 +111,9 @@ def cas_mon():
             break
         match = expr.search(out)
         if match != None:
-#            print("yield:{}".format(match.group(1)))
-            yield match.group(1)
+            uut = match.group(1)
+            if not blacklisted(uut):
+                yield(uut)
             
 uuts = set()     
 
