@@ -101,13 +101,14 @@ def blacklisted(uut):
 def cas_mon():
 #    casw = subprocess.Popen(('casw', '-i', '2'), bufsize=-1, stdout=subprocess.PIPE)
     casw =subprocess.Popen(('nc', 'acq2006_013', '54555'), bufsize=-1, stdout=subprocess.PIPE)
+#    casw =subprocess.Popen(('nc', 'acq2106_130', '54555'), bufsize=-1, stdout=subprocess.PIPE)
     expr = re.compile('  ([]\w.-]+):5064')
     blacklist = ( "acq196", "acq164", "acq132", "acq216")
     
     while True:
         out = casw.stdout.readline()
 #        print("incoming:{}".format(out))
-        if out == '' and process.poll() != None:
+        if out == '' and casw.poll() != None:
             break
         match = expr.search(out)
         if match != None:
