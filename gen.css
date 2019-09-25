@@ -1,0 +1,38 @@
+
+pre { font-family: "Courier New", Courier, monospace; }
+
+
+.pretab {
+	border-spacing: 0;
+	border-collapse: collapse;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+}
+.vchanged { color:blue; }
+
+pre.regular { color:blue; font-family: "Courier New", Courier, monospace; }
+
+.tblocks {
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+td.tblock_cooked {
+	padding-left: 10px;
+	padding-right: 10px;	
+	background-color:  blue;	
+}
+td.tblock_shared {
+	padding-left: 10px;
+	padding-right: 10px;	
+	background-color: green;	
+}
+td.tblock_raw {
+	padding-left: 10px;
+	padding-right: 10px;	
+	background-color: red;
+}
+td.tblock_empty {
+	padding-left: 10px;
+	padding-right: 10px;	
+	background-color:  grey;
+}

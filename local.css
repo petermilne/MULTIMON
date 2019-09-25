@@ -1,0 +1,54 @@
+/********************************************************************
+
+Local Style sheet 
+
+********************************************************************/
+
+div.gloss_detail 
+{
+	background-color:yellow;
+	border: 2px solid black;
+	margin: 20px 4px 20px 4px;
+	padding: 5px;
+}
+
+a.gloss, a.gloss:link, a.gloss:visited {
+	color: black;
+	font-style: italic;
+}
+
+a.dtacq {
+	color: black;
+	font-weight: bold;
+}
+
+.vanilla-link {
+	color:blue;
+}
+
+ul {
+	list-style-image: url(images/d-tacq-icon-small.gif);
+}
+
+/** dtacqlogo - id of logo icon at top left. We want to enforce a BLUE border */
+
+#dtacqlogo {
+	border-color: blue;
+	margin-left: 10px
+}
+
+td.footer-valid {
+	border-style: none;
+	text-align: right;
+	padding-left: 140px;
+}
+
+img {
+	border: none;	
+}
+
+.tblocks {
+	border: 2px solid black;
+	/* margin: 20px 20px 20px 20px; */
+	padding: 2px;		
+}

@@ -1,0 +1,146 @@
+/********************************************************************
+
+Style sheet for REM generated pages - links with details_page.php
+
+********************************************************************/
+
+/* Styles for the main page left and right columns */
+table.REMpg-page-table
+{
+	border-collapse: collapse;
+	border-spacing: 10px;
+	empty-cells: hide;
+}
+
+td.REMpg-page-td-left
+{
+	width: 20%;
+	vertical-align: top;
+	border: none;
+	border-right: medium solid #ddd;
+	border-left: medium solid #ddd;
+	background-color: white;
+	color: black;
+	padding: 10px;
+}
+
+td.REMpg-page-td-right
+{
+	width: 80%;
+	vertical-align: top;
+	border: none;
+	border-right: medium solid #ddd;
+	background-color: white;
+	color: black;
+	padding: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+/* Spacer used within page layouts */
+div.REMpg-div
+{
+	margin-top: 10px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	padding: 0px 0px 0px 0px;
+}
+
+/* Style for page images in left column */
+img.REMpg-img
+{
+	width: 200px;
+	height: 135px;
+	float: left;
+	padding: 0px 0px 0px 0px;
+	margin-top: 5px;
+}
+
+td.REMpg-img-p
+{
+	color: black;
+}
+
+/* REMkey=title class */
+h1.REMpg-top-heading
+{
+	background-color: white;
+  	font-family: Arial, Helvetica, sans-serif;
+	color: black;
+	font-weight: bold;
+	font-size: large;
+	vertical-align: middle;
+	text-align: center;
+}
+
+/* REMkey=heading class */
+h1.REMpg-heading
+{
+	background-color: white;
+  	font-family: Arial, Helvetica, sans-serif;
+	color: black;
+	font-weight: bold;
+	font-size: large;
+	vertical-align: middle;
+	text-align: center;
+}
+
+/* REMkey=paragraph class */
+p.REMpg-ptext
+{
+	color: black;
+}
+
+/* REMkey=table class */
+table.REMpg-table
+{
+	border: medium solid blue;
+	border-collapse: collapse;
+	empty-cells: show;
+}
+
+td.REMpg-tdH
+{
+	border: thin solid gray;
+	background-color: white;
+	color: black;
+	font-weight: bold;
+	vertical-align: middle;
+	text-align: center;
+	padding: 5px 5px 5px 5px;
+}
+
+td.REMpg-td
+{
+	border: thin solid gray;
+  	font-family: Courier, sans-serif;
+	color: black;
+	vertical-align: middle;
+	text-align: right;
+	padding: 5px 5px 5px 5px;
+}
+
+td.REMpg-td-idle
+{
+	border: thin solid gray;
+	color: black;
+	background-color: white;
+	color: black;
+	vertical-align: middle;
+	text-align: left;
+	padding: 5px 10px 5px 5px;
+}
+
+/* REMkey=list class */
+ul.REMpg-ul
+{
+	vertical-align: top;
+}
+
+li.REMpg-li
+{
+	color: black;
+	margin-top: 0px;
+	padding-top: 0px;
+}
