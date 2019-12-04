@@ -29,7 +29,7 @@
                 </td>
                 <td colspan="7" class="REMpg-top-heading">
                     <h1> 
-           			ACQ400 UUT Status
+           			ACQ400 UUT Status for the DNS-ly challenged
                     </h1>
                     <h2>
                     By Hostname
@@ -132,7 +132,8 @@
                 </xsl:attribute>
                  <xsl:choose>
 			<xsl:when test="position() = 1">
-				 <a href="http://{.}/">
+				 <xsl:variable name="ipaddr" select="@ip"/>
+				 <a href="http://{$ipaddr}">
 				 	<xsl:value-of select="."/>
 				 </a>
 			</xsl:when>			
