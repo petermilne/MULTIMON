@@ -100,8 +100,8 @@ def blacklisted(uut):
 
 def cas_mon():
 #    casw = subprocess.Popen(('casw', '-i', '2'), bufsize=-1, stdout=subprocess.PIPE)
-    casw =subprocess.Popen(('nc', 'acq2006_013', '54555'), bufsize=-1, stdout=subprocess.PIPE)
-#    casw =subprocess.Popen(('nc', 'acq2106_130', '54555'), bufsize=-1, stdout=subprocess.PIPE)
+#    casw =subprocess.Popen(('nc', 'acq2006_013', '54555'), bufsize=-1, stdout=subprocess.PIPE)
+    casw =subprocess.Popen(('nc', 'acq2106_130', '54555'), bufsize=-1, stdout=subprocess.PIPE)
     expr = re.compile('  ([]\w.-]+):5064')
     blacklist = ( "acq196", "acq164", "acq132", "acq216")
     
@@ -200,7 +200,7 @@ while True:
             xml.write('        <acq400monitor dt="{}"/>\n'.format(uut.delay))
 	    
             xml.write("        <info>\n")        
-            xml.write("            <host>{}</host>\n".format(uut.epics_hn))
+            xml.write("            <host ip=\"{}\">{}</host>\n".format(socket.gethostbyname(uut.epics_hn), uut.epics_hn))
             
             for key, value in xml_sequence(uut):
                 xml.write("            <{}>{}</{}>\n".format(key, value, key))
