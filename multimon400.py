@@ -99,10 +99,18 @@ def blacklisted(uut):
             return True
     return False
 
+casw_servers = ('acq2006_015', 'acq1001_074', 'acq2106_054' )
+
+def find_casw():
+    for uut in casw_servers:
+        casw = subprocess.Popen(('nc', uut, '54555'), bufsize=-1, stdout=subprocess.PIPE)
+	time.sleep(1)
+        if casw.poll() is None:
+            print("casw server established {}".format(uut))
+            return casw
+
 def cas_mon():
-#    casw = subprocess.Popen(('casw', '-i', '2'), bufsize=-1, stdout=subprocess.PIPE)
-#    casw =subprocess.Popen(('nc', 'acq2006_013', '54555'), bufsize=-1, stdout=subprocess.PIPE)
-    casw =subprocess.Popen(('nc', 'acq2106_130', '54555'), bufsize=-1, stdout=subprocess.PIPE)
+    casw = find_casw()
     expr = re.compile('  ([]\w.-]+):5064')
     blacklist = ( "acq196", "acq164", "acq132", "acq216")
     
