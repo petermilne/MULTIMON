@@ -1,4 +1,4 @@
-#!/usr/local/bin/python
+#!/usr/bin/env python3
 import pexpect
 import threading
 import subprocess
@@ -9,7 +9,6 @@ import re
 import sys
 import time
 import os
-import exceptions
 import datetime
 
 class Uut:
@@ -28,9 +27,9 @@ class Uut:
         
     def __init__(self, _name):
 #        print("Uut {}".format(_name))
-	self.pv_trunc = re.compile('.*:')
-        self.pvs = {}	    # pv values
-	self._PVS = []	    # pv instances
+        self.pv_trunc = re.compile('.*:')
+        self.pvs = {}       # pv values
+        self._PVS = []      # pv instances
         self.delay = 0
         self.name = _name
         self.ip = socket.gethostbyname(self.name)
@@ -66,31 +65,31 @@ class Uut:
 #        self.pvs[re.sub(self.pv_trunc, '', kws['pvname'])] = kws['value']
         self.pvs[re.sub(self.pv_trunc, '', kws['pvname'])] = kws['char_value']
 #        self.pvs[re.sub(self.pv_trunc, '', kws['pvname'])] = txt
-        self.delay = 0	
+        self.delay = 0  
      
     def uut_status_update(self):
-	print("uut_status_update {} {} {}".format(self.epics_hn, threading.currentThread().ident, 01))
+        print("uut_status_update {} {} {}".format(self.epics_hn, threading.currentThread().ident, 1))
         for pvname in ( ':SYS:UPTIME', ':SYS:VERSION:SW', ':SYS:VERSION:FPGA', \
-	                ':USER', ':TEST_DESCR', \
+                        ':USER', ':TEST_DESCR', \
                         ':SYS:0:TEMP', ':1:SHOT', ':MODE:TRANS_ACT:STATE' 
-			, ':2:SIG:ACQ1014:CLK_SRC', ':2:SIG:ACQ1014:TRG_SRC' 
-#			, ':0:SIG:CLK_S1:FREQ', ':0:SIG:TRG_S1:FREQ'
-			, ':0:SIG:CLK_MB:FREQ', ':0:SIG:CLK_MB:SET'
-			):
-	    self.pvs[re.sub(self.pv_trunc, '', pvname)] = '...'
+                        , ':2:SIG:ACQ1014:CLK_SRC', ':2:SIG:ACQ1014:TRG_SRC' 
+#                       , ':0:SIG:CLK_S1:FREQ', ':0:SIG:TRG_S1:FREQ'
+                        , ':0:SIG:CLK_MB:FREQ', ':0:SIG:CLK_MB:SET'
+                        ):
+            self.pvs[re.sub(self.pv_trunc, '', pvname)] = '...'
             self._PVS.append(epics.PV(self.epics_hn + pvname, auto_monitor=True, form='native', callback=self.on_update))
-	    
-	print("uut_status_update {} {} {}".format(self.epics_hn, threading.currentThread().ident, 10))
-	while self.delay < 60:
-#	    print("uut_status_update {} {} {}".format(self.epics_hn, threading.currentThread().ident, 33))
-	    time.sleep(2.0)
-	    
-	print("uut_status_update {} {} {}".format(self.epics_hn, threading.currentThread().ident, 66))
-	for pv in self._PVS:
-	    pv.disconnect()
-	    self._PVS.remove(pv)
-	print("uut_status_update {} {} {}".format(self.epics_hn, threading.currentThread().ident, 99))
-	 
+            
+        print("uut_status_update {} {} {}".format(self.epics_hn, threading.currentThread().ident, 10))
+        while self.delay < 60:
+#           print("uut_status_update {} {} {}".format(self.epics_hn, threading.currentThread().ident, 33))
+            time.sleep(2.0)
+            
+        print("uut_status_update {} {} {}".format(self.epics_hn, threading.currentThread().ident, 66))
+        for pv in self._PVS:
+            pv.disconnect()
+            self._PVS.remove(pv)
+        print("uut_status_update {} {} {}".format(self.epics_hn, threading.currentThread().ident, 99))
+         
 
 def blacklisted(uut):
     blacklist = ( "acq196", "acq164", "acq132", "acq216")
@@ -102,9 +101,12 @@ def blacklisted(uut):
 casw_servers = ('acq2006_015', 'acq1001_074', 'acq2106_054' )
 
 def find_casw():
+    casw = subprocess.Popen(('casw', '-i', '2'), bufsize=-1, stdout=subprocess.PIPE)
+    return casw
+
     for uut in casw_servers:
         casw = subprocess.Popen(('nc', uut, '54555'), bufsize=-1, stdout=subprocess.PIPE)
-	time.sleep(1)
+        time.sleep(1)
         if casw.poll() is None:
             print("casw server established {}".format(uut))
             return casw
@@ -115,7 +117,7 @@ def cas_mon():
     blacklist = ( "acq196", "acq164", "acq132", "acq216")
     
     while True:
-        out = casw.stdout.readline()
+        out = casw.stdout.readline().decode('utf-8')
 #        print("incoming:{}".format(out))
         if out == '' and casw.poll() != None:
             break
@@ -135,7 +137,7 @@ def _uut_mon(hn):
         print("New: %s" % uut)
         if uut.epics_hn != None:
             uuts.add(uut)
-	    uut.uut_status_update()
+            uut.uut_status_update()
             
             
 def uut_mon():  
@@ -177,9 +179,9 @@ def xml_sequence(uut):
 def xml_headers():
     global TAGS
     for label in ('Delay', 'UUT'):
-	yield label
+        yield label
     for key, label in TAGS:
-	yield label
+        yield label
     
             
 if os.getenv("MULTIMON_CUSTOM") != None:
@@ -211,18 +213,18 @@ def make_hosts(uuts):
 while True:  
     with open(DATFTMP, 'w') as xml:
         xml.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-	xml.write("<body>\n")
-	xml.write("    <header>\n")
+        xml.write("<body>\n")
+        xml.write("    <header>\n")
         xml.write("        <ts>{}</ts>\n".format(time.strftime("%a, %d %b %T %Z %Y" )))
-	xml.write("        <cheads>\n")
-	for ch in xml_headers():	    
-	    xml.write('            <h1>{}</h1>\n'.format(ch))	
-	xml.write("        </cheads>\n")
-	xml.write("     </header>\n")
+        xml.write("        <cheads>\n")
+        for ch in xml_headers():            
+            xml.write('            <h1>{}</h1>\n'.format(ch))   
+        xml.write("        </cheads>\n")
+        xml.write("     </header>\n")
         for uut in sorted(uuts):
             xml.write("    <record>\n")
             xml.write('        <acq400monitor dt="{}"/>\n'.format(uut.delay))
-	    
+            
             xml.write("        <info>\n")    
             xml.write("            <host ip=\"{}\">{}</host>\n".format(socket.gethostbyname(uut.epics_hn), uut.epics_hn))
             
@@ -238,9 +240,9 @@ while True:
         xml.write("</body>\n")
 
     try:        
-	os.rename(DATFTMP, DATFILE)
+        os.rename(DATFTMP, DATFILE)
     except OSError:
-	print("OSError")
+        print("OSError")
 
     make_hosts(uuts)
                 
