@@ -9,7 +9,7 @@ fi
 if [ -e /multimon/multimon400.py ]; then
 	echo "partition is already populated, no action"
 else
-	cp -a /home/peter/multimon/* /multimon
+	cp -a /home/dt100/multimon/* /multimon
 fi
 
 

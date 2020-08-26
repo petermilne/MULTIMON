@@ -2,7 +2,7 @@
 # site customization for multimon
 import threading
 import time
-import urllib2
+import urllib.request as urllib2
 import re
 
 TTYSERVERS = (
@@ -21,7 +21,7 @@ def update_ttys(ttys, server):
 #            print(match.group(1))
                 ttys[match.group(1)] = server
     except:
-	print("exception")
+        print("exception")
     
 def tty_mon(uuts):
     global TTYSERVERS
