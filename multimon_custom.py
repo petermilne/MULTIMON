@@ -14,14 +14,17 @@ TTYSERVERS = (
 def update_ttys(ttys, server):
     try:
         response = urllib2.urlopen('http://{}/cgi-bin/showconsoles.cgi'.format(server))
-        html = response.read()
+        html = response.read().decode('utf-8')
+
         for line in html.split('\n'):        
             match = re.match('tty_([a-zA-Z0-9_]+)', line)
             if (match):
-#            print(match.group(1))
+                print(match.group(1))
                 ttys[match.group(1)] = server
-    except:
-        print("exception")
+    except IOError as e:
+        pass
+
+
     
 def tty_mon(uuts):
     global TTYSERVERS
