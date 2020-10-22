@@ -98,6 +98,14 @@ def blacklisted(uut):
             return True
     return False
 
+def whitelisted(uut):
+    whitelist = ("10.12.198", "10.12.199")
+    ip = socket.gethostbyname(uut)
+    for w in whitelist:
+        if uut.startswith(w):
+            return True
+    return False
+
 casw_servers = ('acq2006_015', 'acq1001_074', 'acq2106_054' )
 
 def find_casw():
@@ -125,7 +133,8 @@ def cas_mon():
         if match != None:
             uut = match.group(1)
             if not blacklisted(uut):
-                yield(uut)
+                if whitelisted(uut):
+                    yield(uut)
             
 uuts = set()     
 
