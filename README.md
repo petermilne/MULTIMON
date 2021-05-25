@@ -4,6 +4,7 @@ A single python file multimon400.py runs continuously, monitoring EPICS beacons
 multimon400.py maintains an xml state file
  * multimon_acq400.xml
 
+![Large Distributed DAQ]
 (https://github.com/petermilne/MULTIMON/releases/download/v1.0.0/Screenshot.from.2020-08-18.08-59-06.png)
 
 This file is written once a second to a directory under httpd:
